@@ -3,44 +3,66 @@ package ua.opnu;
 
 public class TimeSpan {
 
-    // TODO: add class fields
+    // Храним всё время в минутах
+    private int totalMinutes;
 
     TimeSpan(int hours, int minutes) {
-        // TODO: write constructor body
+        // Невалидные аргументы -> интервал 0:00
+        if (hours < 0 || minutes < 0 || minutes > 59) {
+            this.totalMinutes = 0;
+        } else {
+            this.totalMinutes = hours * 60 + minutes;
+        }
     }
 
     int getHours() {
-        return 0;
+        return totalMinutes / 60;
     }
 
     int getMinutes() {
-        // TODO: write method body
-        return 0;
+        return totalMinutes % 60;
     }
 
     void add(int hours, int minutes) {
-        // TODO: write method body
+        // Если аргументы некорректные — ничего не меняем
+        if (hours < 0 || minutes < 0 || minutes > 59) {
+            return;
+        }
+        totalMinutes += hours * 60 + minutes;
     }
 
     void addTimeSpan(TimeSpan timespan) {
-        // TODO: write method body
+        if (timespan == null) {
+            return;
+        }
+        totalMinutes += timespan.getTotalMinutes();
     }
 
     double getTotalHours() {
-        // TODO: write method body
-        return 0;
+        return totalMinutes / 60.0;
     }
 
     int getTotalMinutes() {
-        // TODO: write method body
-        return 0;
+        return totalMinutes;
     }
 
     void subtract(TimeSpan span) {
-        // TODO: write method body
+        if (span == null) {
+            return;
+        }
+        int other = span.getTotalMinutes();
+        // Можно вычитать только если результат не уйдет в минус
+        if (other <= totalMinutes) {
+            totalMinutes -= other;
+        }
+        // Если other > totalMinutes — ничего не делаем (по тестам)
     }
 
     void scale(int factor) {
-        // TODO: write method body
+        // Нулевой или отрицательный множитель — интервал не меняется
+        if (factor <= 0) {
+            return;
+        }
+        totalMinutes *= factor;
     }
 }
